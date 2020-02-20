@@ -18,9 +18,6 @@ public class CardService {
     @Autowired
     private CardInfoRepository cardInfoRepository;
 
-    private ClientResponse clientResponse;
-
-
     public ClientResponse verifyCard(String cardNumber){
 
         final String uri = "https://lookup.binlist.net/{cardNumber}";
@@ -29,7 +26,10 @@ public class CardService {
 
             BinPayload result = restTemplate.getForObject(uri, BinPayload.class, cardNumber);
             cardInfoRepository.save(setCardInfo(result, cardNumber));
-            return createResponse(result);
+            
+            ClientResponse clientResponse = createResponse(result);
+           
+            return clientResponse;
         }
         catch(Exception e){
             throw new CardNumberNotFound("Card number '"+ cardNumber + "' cannot be found");

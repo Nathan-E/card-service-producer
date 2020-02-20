@@ -1,8 +1,10 @@
 package com.velatech.cardverifier.controller;
+
 import com.velatech.cardverifier.dto.clientResponse.ClientResponse;
 import com.velatech.cardverifier.dto.statPackage.StatResponse;
-import com.velatech.cardverifier.exception.recordNotFoundException;
+import com.velatech.cardverifier.exception.RecordNotFoundException;
 import com.velatech.cardverifier.service.CardService;
+import com.velatech.cardverifier.service.KafkaProducerConfig;
 import com.velatech.cardverifier.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -22,11 +24,19 @@ public class RequestController {
 
     @Autowired
     private QueryService queryService;
+    
+    @Autowired
+    private KafkaProducerConfig kafkaProducer;
 
 
     @GetMapping("/verify/{cardNumber}")
     public ClientResponse getCardDetails(@PathVariable("cardNumber") String cardNumber) {
-        return verifyCard.verifyCard(cardNumber);
+    	
+    	ClientResponse response = verifyCard.verifyCard(cardNumber);
+    	
+    	if(response != null)
+    		kafkaProducer.sendMessage(response);
+    	return response;
     }
 
 
@@ -40,7 +50,7 @@ public class RequestController {
 
         }
         catch(Exception e){
-            throw new recordNotFoundException("No records found within the specified range");
+            throw new RecordNotFoundException("No records found within the specified range");
 
         }
     }

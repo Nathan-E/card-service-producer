@@ -1,14 +1,11 @@
 package com.velatech.cardverifier.exception;
 
 
-import lombok.Data;
-
-@Data
-public class recordNotFoundResponse {
+public class RecordNotFoundResponse {
 
     private String message;
 
-    recordNotFoundResponse(String message){
+    public RecordNotFoundResponse(String message){
         this.message = message;
     }
 }

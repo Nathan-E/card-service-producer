@@ -24,8 +24,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public final ResponseEntity<Object> handleRecordNotFoundException(recordNotFoundException ex) {
-        recordNotFoundResponse exceptionResponse = new recordNotFoundResponse(ex.getMessage());
+    public final ResponseEntity<Object> handleRecordNotFoundException(RecordNotFoundException ex) {
+        RecordNotFoundResponse exceptionResponse = new RecordNotFoundResponse(ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 

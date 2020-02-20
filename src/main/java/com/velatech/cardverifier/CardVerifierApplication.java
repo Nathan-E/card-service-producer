@@ -17,5 +17,7 @@ public class CardVerifierApplication {
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
+    
+    
 }
 
